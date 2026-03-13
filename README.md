@@ -8,8 +8,8 @@ Este repositorio contiene los laboratorios y entregas del curso, organizados por
 
 | Nombre | GitHub |
 |--------|--------|
-| Nombre Apellido 1 | [@Litr0](https://github.com/Litr0) |
-| Nombre Apellido 2 | [@BAFS](https://github.com/BAFS) |
+| Gonzalo Sobarzo | [@Litr0](https://github.com/Litr0) |
+| Bryan Cabezas | [@BAFS](https://github.com/BAFS) |
 
 ## Estructura del repositorio
 
