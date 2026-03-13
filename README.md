@@ -9,7 +9,7 @@ Este repositorio contiene los laboratorios y entregas del curso, organizados por
 | Nombre | GitHub |
 |--------|--------|
 | Nombre Apellido 1 | [@Litr0](https://github.com/Litr0) |
-| Nombre Apellido 2 | [@usuario2](https://github.com/usuario2) |
+| Nombre Apellido 2 | [@BAFS](https://github.com/BAFS) |
 
 ## Estructura del repositorio
 
