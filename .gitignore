@@ -207,3 +207,6 @@ marimo/_lsp/
 __marimo__/
 
 lab1/
+
+.DS_Store
+.DS_Store/
