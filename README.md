@@ -9,7 +9,7 @@ Este repositorio contiene los laboratorios y entregas del curso, organizados por
 | Nombre | GitHub |
 |--------|--------|
 | Gonzalo Sobarzo | [@Litr0](https://github.com/Litr0) |
-| Bryan Cabezas | [@BAFS](https://github.com/BAFS) |
+| Bryan Cabezas | [@BAFCS](https://github.com/BAFCS) |
 
 ## Estructura del repositorio
 
@@ -27,3 +27,4 @@ uv venv
 source .venv/bin/activate
 uv sync
 pre-commit install
+uv run ruff check .
