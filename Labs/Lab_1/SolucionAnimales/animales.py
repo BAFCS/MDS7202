@@ -1,9 +1,7 @@
 def animales(input):
-    
     '''
     Como hace el animalito?
     '''
-    
     if input.lower() == 'gato':
         print('miau')
     elif input.lower() == 'perro': #Se modificó, cambiando if por elif
