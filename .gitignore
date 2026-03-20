@@ -216,3 +216,6 @@ lab1/
 *.bmp
 *.svg
 *.ico
+
+# Activador
+activate.sh
