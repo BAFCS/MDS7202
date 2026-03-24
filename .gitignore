@@ -207,3 +207,15 @@ marimo/_lsp/
 __marimo__/
 
 lab1/
+
+# Images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.svg
+*.ico
+
+# Activador
+activate.sh
