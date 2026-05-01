@@ -234,3 +234,8 @@ activate.sh
 *.xlsx
 *.xls
 *.json
+
+
+.DS_Store
+.*DS_Store
+Labs/.DS_Store
