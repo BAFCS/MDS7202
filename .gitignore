@@ -219,3 +219,23 @@ lab1/
 
 # Activador
 activate.sh
+
+# DB files
+*.csv
+*.pickle
+*.parquet
+*.feather
+*.h5
+*.hdf5
+*.db
+*.sqlite
+*.sqlite3
+*.tsv
+*.xlsx
+*.xls
+*.json
+
+
+.DS_Store
+.*DS_Store
+Labs/.DS_Store
