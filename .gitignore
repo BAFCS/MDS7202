@@ -246,3 +246,4 @@ despliegue.py
 make_prediction.py
 
 mlruns/
+models/
