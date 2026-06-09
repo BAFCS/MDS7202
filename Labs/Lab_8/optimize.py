@@ -96,5 +96,5 @@ if __name__ == "__main__":
 
     #Crear el requirements.txt con las dependencias necesarias para replicar en docker
     with open("requirements.txt", "w", encoding="utf-8") as f:
-        subprocess.run(["pip", "freeze"], stdout=f, check=True)
+        subprocess.run(["pip", "list", "--format=freeze"], stdout=f, check=True) #El --local es para que solo se incluyan las dependencias instaladas en el entorno virtual actual, evitando así incluir paquetes globales que podrían no ser necesarios o causar conflictos en otros entornos.
 

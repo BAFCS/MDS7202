@@ -1,0 +1,33 @@
+# Descargar versión python que ya viene todo para ser ejecutado
+FROM python:3.14-slim
+
+# Establecer directorio de trabajo del contenedor y donde se guardara todo
+WORKDIR /app
+
+#Se agrega requirements al contenedor para instalar las depedencias
+COPY requirements.txt .
+
+# Instalar las dependencias del proyecto 
+RUN pip install --no-cache-dir -r requirements.txt
+
+#Copiar los archivos necesarios dentro del contenedor
+#Copiar todo  lo que hay en el directorio actual, por ello se utiliza .dockerignore para evitar copiar archivos innecesarios
+COPY . . 
+
+# Crear volumen para mantener la persistencia de los modelos entrenados en local
+VOLUME ["/app/models"]
+
+# Exponer el puerto de FastAPI
+EXPOSE 8000
+
+#Comando para ejecutar fastapi con uvicorn con el host 0.0.0.0 para que sea accesible desde fuera del contenedor y el puerto 8000
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+#Para construir la imagen de docker de Dockerfile ejecutar: el -t es para asignarle un nombre a la imagen y el punto final es para indicar que el dockerfile se encuentra en el directorio actual
+# docker build -t api-potabilidad-fastapi .
+
+
+# Toma la imagen y crea el contenedor. el -p es para mapear el puerto del contenedor al puerto local.
+# docker run -p 8000:8000 api-potabilidad
+
+

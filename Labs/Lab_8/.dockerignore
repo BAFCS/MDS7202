@@ -1,9 +1,12 @@
-mlruns
+mlruns/
 
-__pycache___
+__pycache__/
 
 .gitignore
 
 *.ipynb
-plots
+plots/
 
+.venv
+.pytest_cache
+.git
