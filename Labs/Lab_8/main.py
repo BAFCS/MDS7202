@@ -1,6 +1,5 @@
 import os
 import pickle
-
 import fastapi
 from mlflow import data
 import uvicorn

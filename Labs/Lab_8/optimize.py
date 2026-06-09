@@ -1,9 +1,13 @@
+import pandas as pd
 import optuna
 import mlflow
+from sklearn.model_selection import train_test_split
 from xgboost import XGBClassifier
 from sklearn.metrics import f1_score
 import pickle
 import os
+import kaleido #Necesario para guardar los gráficos de Optuna en formato PNG
+import plotly
 
 def optimize_model(X_train, X_test, y_train, y_test):
     experiment_name = "xgboost_optuna_water"
@@ -32,6 +36,22 @@ def optimize_model(X_train, X_test, y_train, y_test):
     study = optuna.create_study(direction="maximize")
     study.optimize(objective, n_trials=15)
 
+    #Creación de grafico
+    plots_dir = "plots"
+    os.makedirs(plots_dir, exist_ok=True)
+
+    #Gráfico de importancia
+    fig_importance = optuna.visualization.plot_param_importances(study)
+    fig_importance.write_image(os.path.join(plots_dir, "importancia_hiperparametros.png"))
+
+    # Gráfico de historial de optimización
+    fig_history = optuna.visualization.plot_optimization_history(study)
+    fig_history.write_image(os.path.join(plots_dir, "historial_optimizacion.png"))
+
+    # Gráfico de distribución de hiperparámetros
+    fig_parallel = optuna.visualization.plot_parallel_coordinate(study)
+    fig_parallel.write_image(os.path.join(plots_dir, "distribucion_hiperparametros.png"))
+
     return experiment # Retornamos el objeto experiment para poder sacar su id más adelante
 
 
@@ -49,10 +69,26 @@ def get_best_model(experiment_id):
     #Guardar como .pkl el modelo
     output = "models"
     os.makedirs(output, exist_ok=True) #Creamos el directorio "models" si no existe
-    pkl_path = os.path.join(output, "modelo_xgboost.pkl")
+    pkl_path = os.path.join(output, f"xgb_{pd.Timestamp.now().strftime('%Y-%m-%d_%H-%M-%S')}.pkl")
     with open(pkl_path, "wb") as f:
         pickle.dump(best_model, f)
 
     print(f"Modelo guardado en {pkl_path}")
 
     return best_model
+
+
+if __name__ == "__main__":
+    # Aqui se cargan los datos y se llama a las funciones
+    db = pd.read_csv("water_potability.csv")
+    X = db.drop("Potability", axis=1)
+    y = db["Potability"]
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+
+
+    experiment = optimize_model(X_train, X_test, y_train, y_test)
+
+    # Se busca y guarda el mejor modelo usando el ID del experimento devuelto
+    mejor_modelo = get_best_model(experiment.experiment_id)
