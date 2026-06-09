@@ -2,8 +2,11 @@ import os
 import pickle
 import fastapi
 from mlflow import data
+from setuptools import glob
 import uvicorn
-from fastapi.responses import JSONResponse  # <-- 1. Importa esto
+from fastapi.responses import JSONResponse  
+import numpy as np
+from pydantic import BaseModel
 
 app = fastapi.FastAPI()
 
@@ -28,9 +31,7 @@ def home():
         },
         "seguimiento": "MLflow para el seguimiento de los experimentos, guardando métricas, parámetros y modelos entrenados.",
         "entradas": [
-            "pH", "Dureza", "Solidos disueltos", "Concentración de cloraminas", 
-            "Sulfatos", "Conductividad", "Carbono orgánico total", 
-            "Trihalometanos", "Turbidez"
+            "pH", "Hardness", "Solids", "Chloramines", "Sulfate", "Conductivity", "Organic_carbon", "Trihalomethanes", "Turbidity",
         ],
         "salida": "Variable binaria (1: Potable, 0: No potable)",
         "detalles_entrenamiento": {
@@ -42,21 +43,54 @@ def home():
 
 
 #Carga del modelo
-MODEL_PATH = os.path.join("models", "best_model.pkl")
-if os.path.exists(MODEL_PATH):
+MODELS_DIR = "models"
+#Se busca todos los archivos .pkl dentro de models
+pkl_files = glob.glob(os.path.join(MODELS_DIR, "*.pkl"))
+if pkl_files:
+    # Ordenar los archivos por su fecha de creación y se toma el más nuevo
+    MODEL_PATH = max(pkl_files, key=os.path.getctime)
     with open(MODEL_PATH, "rb") as f:
         model = pickle.load(f)
-    print("Modelo cargado exitosamente desde '{}'!".format(MODEL_PATH))
+    print(f"¡Modelo más reciente cargado exitosamente desde '{MODEL_PATH}'!")
 else:
     model = None
-    print(f"Advertencia: No se encontró el archivo del modelo en '{MODEL_PATH}'. Asegúrate de entrenarlo primero.")
+    MODEL_PATH = None
+    print(f"Advertencia: No se encontró ningún archivo .pkl en la carpeta '{MODELS_DIR}'.")
+
+class MedicionAgua(BaseModel):
+    ph: float
+    Hardness: float
+    Solids: float
+    Chloramines: float
+    Sulfate: float
+    Conductivity: float
+    Organic_carbon: float
+    Trihalomethanes: float
+    Turbidity: float
+
 
 @app.post("/potabilidad/")
-def predecir_potabilidad(data: dict):
+def predecir_potabilidad(data: MedicionAgua):
+    features = np.array([
+        data.ph,
+        data.Hardness,
+        data.Solids,
+        data.Chloramines,
+        data.Sulfate,
+        data.Conductivity,
+        data.Organic_carbon,
+        data.Trihalomethanes,
+        data.Turbidity
+    ]).reshape(1, -1) #Convertimos la lista de características en un array de numpy y lo redimensionamos a una matriz de 1 fila y n columnas (donde n es el número de características)
+
+    print("Esto es la data:", features)
+
 
     # Aqui se lee el modelo entrenado y se hace la prediccion con los datos recibidos
-    prediccion = model.predict(data)
-    return {"prediccion": prediccion}
+    prediccion_array = model.predict(features)
+    resultado_final = int(prediccion_array[0]) #valor de la prediccion convertido a entero (0 o 1)
+
+    return {"potabilidad": resultado_final}
 
 
 #  Bloque para levantar el servidor ejecutando "python main.py"

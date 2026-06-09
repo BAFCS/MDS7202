@@ -1,0 +1,9 @@
+mlruns
+
+__pycache___
+
+.gitignore
+
+*.ipynb
+plots
+

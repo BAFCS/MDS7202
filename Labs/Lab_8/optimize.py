@@ -8,6 +8,7 @@ import pickle
 import os
 import kaleido #Necesario para guardar los gráficos de Optuna en formato PNG
 import plotly
+import subprocess #esto sera para crear el requirements.txt
 
 def optimize_model(X_train, X_test, y_train, y_test):
     experiment_name = "xgboost_optuna_water"
@@ -92,3 +93,8 @@ if __name__ == "__main__":
 
     # Se busca y guarda el mejor modelo usando el ID del experimento devuelto
     mejor_modelo = get_best_model(experiment.experiment_id)
+
+    #Crear el requirements.txt con las dependencias necesarias para replicar en docker
+    with open("requirements.txt", "w", encoding="utf-8") as f:
+        subprocess.run(["pip", "freeze"], stdout=f, check=True)
+
