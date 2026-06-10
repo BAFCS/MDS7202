@@ -1,5 +1,5 @@
 # Descargar versión python que ya viene todo para ser ejecutado. No se escogio la 3.14 ya que no venia con implementaciones claves para las librerias en su versión slim
-FROM python:3.11-slim 
+FROM python:3.11-slim
 
 # Establecer directorio de trabajo del contenedor y donde se guardara todo
 WORKDIR /app
@@ -7,12 +7,12 @@ WORKDIR /app
 #Se agrega requirements al contenedor para instalar las depedencias
 COPY requirements.txt .
 
-# Instalar las dependencias del proyecto 
+# Instalar las dependencias del proyecto
 RUN pip install --no-cache-dir -r requirements.txt
 
 #Copiar los archivos necesarios dentro del contenedor
 #Copiar todo  lo que hay en el directorio actual, por ello se utiliza .dockerignore para evitar copiar archivos innecesarios
-COPY . . 
+COPY . .
 
 # Crear volumen para mantener la persistencia de los modelos entrenados en local
 VOLUME ["/app/models"]
@@ -29,5 +29,3 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 # Toma la imagen y crea el contenedor. el -p es para mapear el puerto del contenedor al puerto local.
 #docker run -p 8000:8000 -v "$(pwd)/models:/app/models" api-potabilidad-fastapi
-
-
