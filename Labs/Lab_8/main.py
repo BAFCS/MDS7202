@@ -1,7 +1,6 @@
 import os
 import pickle
 import fastapi
-from mlflow import data
 from setuptools import glob
 import uvicorn
 from fastapi.responses import JSONResponse  

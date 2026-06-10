@@ -95,6 +95,21 @@ if __name__ == "__main__":
     mejor_modelo = get_best_model(experiment.experiment_id)
 
     #Crear el requirements.txt con las dependencias necesarias para replicar en docker
-    with open("requirements.txt", "w", encoding="utf-8") as f:
-        subprocess.run(["pip", "list", "--format=freeze"], stdout=f, check=True) #El --local es para que solo se incluyan las dependencias instaladas en el entorno virtual actual, evitando así incluir paquetes globales que podrían no ser necesarios o causar conflictos en otros entornos.
+    # Se decidio explicitar las dependencias ya que pip freeze genera muchas librerias que docker no necesita como las de conda que dan error.
+    try:
+        # Solo lo estrictamente necesario para la API
+        librerias_api = [
+            "fastapi==0.111.0",
+            "uvicorn==0.30.1",
+            "pydantic==2.7.4",
+            "xgboost==2.0.3",
+            "numpy==1.26.4",
+            "scikit-learn==1.5.0",
+        ]
+        #No se agrego mlflow ni optuna ya que docker solo llamará a la API y no al optimize.py
+        #Creación y guardado de archivo
+        with open("requirements.txt", "w", encoding="utf-8") as f:
+            f.write("\n".join(librerias_api) + "\n")
+    except Exception as e:
+        print(f"Error al generar el requirements.txt: {e}")
 
