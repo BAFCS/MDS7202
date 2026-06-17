@@ -244,3 +244,6 @@ Labs/.DS_Store
 
 despliegue.py
 make_prediction.py
+
+mlruns/
+models/
