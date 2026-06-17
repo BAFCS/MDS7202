@@ -240,7 +240,9 @@ activate.sh
 .*DS_Store
 Labs/.DS_Store
 
-.*pkl
 
 despliegue.py
 make_prediction.py
+
+mlruns/
+models/

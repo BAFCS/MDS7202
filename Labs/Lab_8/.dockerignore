@@ -1,0 +1,12 @@
+mlruns/
+
+__pycache__/
+
+.gitignore
+
+*.ipynb
+plots/
+
+.venv
+.pytest_cache
+.git
