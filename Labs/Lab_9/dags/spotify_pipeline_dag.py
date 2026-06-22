@@ -1,38 +1,21 @@
-# Escribe aquí tu código (copia el template y completa los TODOs)
-%%writefile ~/airflow/dags/spotify_pipeline_dag.py
-
-from pathlib import Path
 import time
-import pandas as pd
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
+from pathlib import Path
 
+import pandas as pd
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-from datetime import datetime
-
 from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
-
-import time
-from pathlib import Path
-from concurrent.futures import ThreadPoolExecutor
-from dataclasses import dataclass
-
-import numpy as np
-import pandas as pd
-import polars as pl
-import numba
-import plotly.express as px
 from sklearn.metrics import root_mean_squared_error
 from sklearn.model_selection import train_test_split
-import platform
-import os
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder
 
-
-DATA_DIR = Path("/RUTA/ABSOLUTA/A/Labs/Lab9_v2/data")  # AJUSTA esta ruta
+DATA_DIR = Path(
+    "/Users/bryan/Desktop/MDS/segundo semestre/Laboratorio de ciencia de datos/Repo/MDS7202/Labs/Lab_9/data"
+)  # AJUSTA esta ruta
 OUTPUT_PATH = Path("/tmp/spotify_data.parquet")
 
 PARAM_COLS = [
@@ -91,17 +74,14 @@ def task_load_data_fn(**context):
     - Guarda el DataFrame resultante en OUTPUT_PATH (formato parquet).
     - Usa XCom para pasar la ruta del archivo a la siguiente tarea.
     """
-    data_pd = load_all_parallel(DATA_DIR, 5) #Cargar los datos en batches
-    data_pd.to_parquet(OUTPUT_PATH) #Guardar en formato parquet
+    data_pd = load_all_parallel(DATA_DIR, 5)  # Cargar los datos en batches
+    data_pd.to_parquet(OUTPUT_PATH)  # Guardar en formato parquet
 
-    #Se envia la información
+    # Se envia la información
 
-    tarea = context['task_instance'] #Extraer la instancia de la tarea desde el contexto de Airflow
+    tarea = context["task_instance"]  # Extraer la instancia de la tarea desde el contexto de Airflow
 
-    tarea.xcom_push(key='archivo_parquet_path', value=OUTPUT_PATH) #Se envia la ruta del archivo a través de XCom
-    
-
-
+    tarea.xcom_push(key="archivo_parquet_path", value=str(OUTPUT_PATH))  # Se envia la ruta del archivo a través de XCom
 
 
 def task_train_model_fn(**context):
@@ -114,14 +94,16 @@ def task_train_model_fn(**context):
     - Entrena build_pipeline(n_jobs=-1).
     - Imprime el tiempo de entrenamiento.
     """
-    tarea = context['task_instance']
+    tarea = context["task_instance"]
 
-    data_cargada_path = tarea.xcom_pull(key='archivo_parquet_path', task_ids='load_data') #Se busca la ruta que guardó la tarea anterior ('load_data')
+    data_cargada_path = tarea.xcom_pull(
+        key="archivo_parquet_path", task_ids="load_data"
+    )  # Se busca la ruta que guardó la tarea anterior ('load_data')
 
     data_pd = pd.read_parquet(data_cargada_path)
 
-    X = data_pd.drop(columns=['valence'])
-    y = data_pd['valence']
+    X = data_pd.drop(columns=["valence"])
+    y = data_pd["valence"]
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
 
@@ -135,10 +117,6 @@ def task_train_model_fn(**context):
     rmse = root_mean_squared_error(y_test, pipeline.predict(X_test))
 
     print(f"n_jobs=-1  → tiempo: {time_entrenado:.1f}s | RMSE: {rmse:.4f}")
-
-    
-
-
 
 
 # ── Definición del DAG ────────────────────────────────────────────────────────
