@@ -252,3 +252,4 @@ Labs/.DS_Store
 *.pdf
 proyecto/modelo_final.pkl
 proyecto/mlruns.zip
+proyecto/.gradio/certificate.pem
