@@ -60,3 +60,11 @@ select = [
 ignore = [
     "E501", # line-too-long: largo de línea (delegado a ruff-format)
 ]
+
+[tool.uv.workspace]
+members = [
+    "proyecto/frontend",
+]
+[tool.uv] #Evita un init.py
+managed = true
+package = false
