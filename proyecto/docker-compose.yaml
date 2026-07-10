@@ -12,7 +12,7 @@ services:
       - ./backend/.env
     networks:
       - chaucherapp_net #Red local
-  
+
   frotend:
     container_name: frontend-ticket
     build:
@@ -28,10 +28,10 @@ services:
       - chaucherapp_net
     depends_on:
       - backend #Ejecuta primero el backend
-  
+
 networks:
   chaucherapp_net:
     driver: bridge
-  
+
 #Para ejecutar:
 #docker compose up --build

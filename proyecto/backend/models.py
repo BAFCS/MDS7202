@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 
 
-
 class PredictionRequest(BaseModel):
     Id_Ticket: str
     Asunto_Ticket: str
@@ -12,8 +11,7 @@ class PredictionRequest(BaseModel):
     Usuario_Antiguedad_Cuenta_Dias: int
     Fecha_Envío: str
 
+
 class PredictionResponse(BaseModel):
     Id_Ticket: str
     Prioridad: str
-
-
