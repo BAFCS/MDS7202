@@ -34,7 +34,7 @@ def enviar_prediccion(Asunto_Ticket, Contenido_Ticket, Canal_Ticket, Categoría_
         else:
             print("error del backend para conectarse")
     except requests.exceptions.ConnectionError as e:
-        return f"No se pudo conectar al backend: {str(e)}"
+        return " Error de Red", f"No se pudo conectar al backend. Detalle: {e}"
 
 
 

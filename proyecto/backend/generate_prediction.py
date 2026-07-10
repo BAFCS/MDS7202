@@ -8,7 +8,7 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 load_dotenv()
 
-MODEL_PATH = "../modelo_final.pkl"
+MODEL_PATH = "modelo_final.pkl"
 
 # %%
 def generate_prediction(df) -> str:
