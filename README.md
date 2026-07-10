@@ -13,13 +13,27 @@ Este repositorio contiene los laboratorios y entregas del curso, organizados por
 
 ## Estructura del repositorio
 
+```text
 .
-├── labs/
-│   ├── lab_1/
-│   └── ...
+├── Labs/
+│   ├── Lab_1/
+│   ├── Lab_2/
+│   ├── Lab_3/
+│   ├── Lab_4/
+│   ├── Lab_5/
+│   ├── Lab_6/
+│   ├── Lab_7/
+│   ├── Lab_8/
+│   ├── Lab_9/
+│   └── Lab_10/
+├── proyecto/
+│   ├── backend/
+│   └── frontend/
 ├── pyproject.toml
 ├── .pre-commit-config.yaml
+├── uv.lock
 └── README.md
+```
 
 ## Configuración del entorno
 

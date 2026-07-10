@@ -1,0 +1,21 @@
+FROM python:3.14-slim
+
+# Instalación de UV
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+WORKDIR /app
+
+COPY pyproject.toml uv.lock ./
+
+RUN uv sync --frozen
+
+COPY . .
+
+EXPOSE 7860
+
+# Ejecutar la app de Gradio mediante uv
+CMD ["uv", "run", "python", "app.py"]
+
+#para ejecutar:
+#docker build -t frontend-ticket:latest .
+#docker run -p 7860:7860 --env-file .env frontend-ticket:latest

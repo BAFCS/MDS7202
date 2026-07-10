@@ -8,6 +8,8 @@ dependencies = [
     "certifi>=2026.2.25",
     "faiss-cpu>=1.14.3",
     "fastapi>=0.136.3",
+    "fastparquet>=2026.5.0",
+    "gradio>=6.20.0",
     "ipywidgets>=8.1.8",
     "jupyter>=1.1.1",
     "jupyterlab>=4.5.6",
@@ -28,11 +30,13 @@ dependencies = [
     "plotly>=6.6.0",
     "pre-commit>=4.5.1",
     "protobuf<4.0.0",
+    "pyarrow>=24.0.0",
     "pypdf>=6.14.2",
     "pypdf2>=3.0.1",
     "python-dotenv>=1.2.2",
     "ruff>=0.15.6",
     "scikit-learn>=1.8.0",
+    "seaborn>=0.13.2",
     "setuptools<82.0.0",
     "shap>=0.52.0",
     "umap-learn>=0.5.12",
@@ -56,3 +60,8 @@ select = [
 ignore = [
     "E501", # line-too-long: largo de línea (delegado a ruff-format)
 ]
+
+
+[tool.uv] #Evita un init.py
+managed = true
+package = false
